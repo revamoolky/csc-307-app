@@ -1,6 +1,6 @@
 // src/main.jsx
 import React from "react";
-import ReactDOMClient from "react-dom/client";9
+import ReactDOMClient from "react-dom";
 import "./main.css";
 import MyApp from "./MyApp";
 
@@ -12,4 +12,4 @@ const container = document.getElementById("root");
 const root = ReactDOMClient.createRoot(container);
 
 // Initial render: Render an element to the Root
-root.render("<MyApp />");
+root.render(<MyApp />);
