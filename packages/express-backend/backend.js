@@ -77,18 +77,13 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-// app.post("/users", (req, res) => {
-//   const userToAdd = req.body;
-//   addUser(userToAdd);
-//   console.log("User added successfully. Sending 201 status...");
-//   res.status(201).send(); // Sending a 201 status to indicate success
-// });
+
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   const newUser = addUser(userToAdd);
-  console.log("User added successfully. Sending 201 status...");
-  res.status(201).json({ id: newUser.id }); // Sending a 201 status and returning the ID of the newly created user
+  res.status(201).json({ id: newUser.id }); 
 });
+
 
 
 app.delete("/users/:id", (req, res) => {
