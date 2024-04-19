@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
@@ -46,6 +47,7 @@ const findUserById = (id) => {
   return users["users_list"].find((user) => user["id"] === id);
 };
 
+app.use(cors("http://127.0.0.1:5173"));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -74,8 +76,18 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
+  // const userToAdd = req.body;
+  // addUser(userToAdd);
+  // res.status(200).send(); // Sending a 200 status to indicate success
+  console.log("Received POST request to /users");
+  console.log("Request body:", req.body);
+  
   const userToAdd = req.body;
   addUser(userToAdd);
+  
+  console.log("User added:", userToAdd);
+  console.log("Updated users list:", users["users_list"]);
+
   res.status(200).send(); // Sending a 200 status to indicate success
 });
 
