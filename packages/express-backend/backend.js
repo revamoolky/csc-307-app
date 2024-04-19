@@ -35,6 +35,8 @@ const users = {
 };
 
 const addUser = (user) => {
+  const randomId = Math.random().toString(36).substr(2, 6);
+  user.id = randomId;
   users["users_list"].push(user);
   return user;
 };
@@ -75,20 +77,31 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
+// app.post("/users", (req, res) => {
+//   const userToAdd = req.body;
+//   addUser(userToAdd);
+//   console.log("User added successfully. Sending 201 status...");
+//   res.status(201).send(); // Sending a 201 status to indicate success
+// });
 app.post("/users", (req, res) => {
-  // const userToAdd = req.body;
-  // addUser(userToAdd);
-  // res.status(200).send(); // Sending a 200 status to indicate success
-  console.log("Received POST request to /users");
-  console.log("Request body:", req.body);
-  
   const userToAdd = req.body;
-  addUser(userToAdd);
-  
-  console.log("User added:", userToAdd);
-  console.log("Updated users list:", users["users_list"]);
+  const newUser = addUser(userToAdd);
+  console.log("User added successfully. Sending 201 status...");
+  res.status(201).json({ id: newUser.id }); // Sending a 201 status and returning the ID of the newly created user
+});
 
-  res.status(200).send(); // Sending a 200 status to indicate success
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params.id;
+  const index = users["users_list"].findIndex((user) => user.id === id);
+  if (index !== -1) {
+    users["users_list"].splice(index, 1);
+    console.log(`User with ID ${id} deleted successfully. Sending 204 status...`);
+    res.status(204).send(); // Sending a 204 status to indicate success with no content
+  } else {
+    console.log(`User with ID ${id} not found. Sending 404 status...`);
+    res.status(404).send("User not found."); // Sending a 404 status if user ID not found
+  }
 });
 
 app.listen(port, () => {
